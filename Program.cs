@@ -76,7 +76,9 @@ namespace Kursach
 				double b;
 				i = CountLetter(nucl, str[l - 1]);
 				j = CountLetter(nucl, str[l - 1 + k]);
+				nucln[i]--;                           //?
 				Console.Write("-" + nucl[i] + " ");
+				nucln[i]++;                           //?
 				Console.Write("+" + nucl[j] + " ");
 				if (i != j)                           //!
 				{
