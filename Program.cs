@@ -43,19 +43,18 @@ namespace Kursach
 			}
 			return i;
 		}
-		//Считает сложность по Вудон-Федерхену
-		static void CountWF(char[] str, uint k, char[] nucl, out double[] cwf)
+		//CWF в первом окне
+		static double CountInFirstFrame(char[] str, uint k, char[] nucl, double[] cwf, uint[] nucln)
 		{
-			cwf = new double[str.Length - k + 1];
 			double sum = 0;
-			uint[] nucln = new uint[nucl.Length];//массив с количеством нуклеотидов в окне
 			for (uint i = 0; i < k; i++)//считаем кол-во нуклеотидов в окне по типам
 			{
 				nucln[CountLetter(nucl, str[i])]++;
 			}
 			Array.Sort(nucln, nucl);
-			PrintNuclNumb(nucln, nucl);
-			for (double i = 1; i <= k; i++)
+			Console.WriteLine("В первой рамке:");
+			PrintNuclNumb(nucln, nucl);//кол-во нуклеотидов в рамке
+			for (double i = 1; i <= k; i++)//считаем сумму произведений в первом окне
 			{
 				double j = i, k1 = k - nucln[nucln.Length - 1];
 				int t = nucln.Length - 2;
@@ -70,26 +69,38 @@ namespace Kursach
 				Console.WriteLine(" sum = " + sum);
 			}
 			cwf[0] = sum / k;
-			for (uint l = 1; l <= str.Length - k; l++)
+			return sum;
+		}
+		//Считает сложность по Вудон-Федерхену
+		static void CountWF(char[] str, uint k, char[] nucl, out double[] cwf)
+		{
+			cwf = new double[str.Length - k + 1];
+			uint[] nucln = new uint[nucl.Length];//массив с количеством нуклеотидов в окне
+			double sum = CountInFirstFrame(str, k, nucl, cwf, nucln);//в первом окне
+			Console.WriteLine("Сдвигаем рамку:");
+			for (uint l = 1; l <= str.Length - k; l++)//двигаем рамку и добавляем новые члены в сумму и считаем cwf
 			{
 				uint i, j;
 				double b;
-				i = CountLetter(nucl, str[l - 1]);
-				j = CountLetter(nucl, str[l - 1 + k]);
+				i = CountLetter(nucl, str[l - 1]);//удаляемый символ
+				j = CountLetter(nucl, str[l - 1 + k]);//добавляемый символ
+				nucln[i]--;                           
 				Console.Write("-" + nucl[i] + " ");
+				nucln[j]++;                           
 				Console.Write("+" + nucl[j] + " ");
-				if (i != j)                           //!
+				if (i != j)//если разные символы
 				{
-					if (nucln[i] == 0) b = 1.0 / (nucln[j] + 1);
-					else b = nucln[i] * 1.0 / (nucln[j] + 1);
+					if (nucln[i] == 0) b = 1.0 / nucln[j];
+					else b = (nucln[i] + 1) * 1.0 / nucln[j];
 					double a = Math.Log(b, 4);
-					Console.Write("{0}/{1} {2} {3} ", nucln[i], (nucln[j] + 1), b, a);
+					Console.Write("{0}/{1} {2} {3} ", (nucln[i] + 1), nucln[j], b, a);
 					sum = sum + Math.Log(b, 4);
 				}
 				Console.WriteLine("sum = " + sum);
 				cwf[l] = sum / k;
 			}
-			for (int i = 0; i < cwf.Length; i++) Console.WriteLine("wf[{0}:{1}] = {2}", i, i + k - 1, cwf[i]);
+			Console.WriteLine();
+			for (int i = 0; i < cwf.Length; i++) Console.WriteLine("Сложность c {0} по {1} символ = {2}", i + 1, i + k, cwf[i]);//выводим посчитанные сложности
 		}
 		static void Main(string[] args)
 		{
