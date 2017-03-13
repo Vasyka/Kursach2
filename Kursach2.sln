@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kursach2", "Kursach2.csproj", "{B0A31A3C-1931-4C3C-B945-726971B08B1D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WottonFederhenCountLibrary", "WottonFederhenCountLibrary\WottonFederhenCountLibrary.csproj", "{D286E51D-1F17-4FB3-A2C7-D7CCDA4B4EBD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -13,5 +15,9 @@ Global
 		{B0A31A3C-1931-4C3C-B945-726971B08B1D}.Debug|x86.Build.0 = Debug|x86
 		{B0A31A3C-1931-4C3C-B945-726971B08B1D}.Release|x86.ActiveCfg = Release|x86
 		{B0A31A3C-1931-4C3C-B945-726971B08B1D}.Release|x86.Build.0 = Release|x86
+		{D286E51D-1F17-4FB3-A2C7-D7CCDA4B4EBD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D286E51D-1F17-4FB3-A2C7-D7CCDA4B4EBD}.Debug|x86.Build.0 = Debug|Any CPU
+		{D286E51D-1F17-4FB3-A2C7-D7CCDA4B4EBD}.Release|x86.ActiveCfg = Release|Any CPU
+		{D286E51D-1F17-4FB3-A2C7-D7CCDA4B4EBD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
