@@ -11,7 +11,8 @@ namespace Kursach
 			char[] str;
 			char[] nucl = { 'A', 'T', 'G', 'C' };
 			double[] cwf;
-			uint n, k;
+			uint n;
+			int k;
 			do
 			{
 				Console.WriteLine("Введите длину последовательности:");
@@ -22,7 +23,7 @@ namespace Kursach
 					WottonCount.GenerateRndStr(out str, n, nucl);
 					WottonCount.PrintStr(str);
 					Console.WriteLine("Введите длину окна:");
-					if (!uint.TryParse(Console.ReadLine(), out k) || k == 0 || k > n)
+					if (!int.TryParse(Console.ReadLine(), out k) || k <= 0 || k > n)
 						throw new ArgumentOutOfRangeException(null, "Длина окна должна быть положительным целым числом, не большим длины самой последовательности.");
 					
 					Stopwatch SW = new Stopwatch();//счетчик
