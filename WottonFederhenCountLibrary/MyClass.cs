@@ -84,15 +84,18 @@ namespace WottonFederhenCountLibrary
 
 			for (int l = 1; l <= str.Length - k; l++)//двигаем рамку и добавляем новые члены в сумму и считаем cwf
 			{
-				if(!(hash.TryGetValue(s.Substring(l, k), out cwf[l]))){
-					uint i, j;
-					double b;
-					i = CountLetter(nucl, str[l - 1]);//удаляемый символ
-					j = CountLetter(nucl, str[l - 1 + k]);//добавляемый символ
-					nucln[i]--;
-					Console.Write("-" + nucl[i] + " ");
-					nucln[j]++;
-					Console.Write("+" + nucl[j] + " ");
+				PrintNuclNumb(nucln, nucl);
+
+				uint i, j;
+				double b;
+				i = CountLetter(nucl, str[l - 1]);//удаляемый символ
+				j = CountLetter(nucl, str[l - 1 + k]);//добавляемый символ
+				nucln[i]--;					
+				Console.Write("-" + nucl[i] + " ");
+				nucln[j]++;
+				Console.Write("+" + nucl[j] + " ");
+				if (!(hash.TryGetValue(s.Substring(l, k), out cwf[l])))//если последовательности нет в хэш-таблице
+				{
 					if (i != j)//если разные символы
 					{
 						if (nucln[i] == 0) b = 1.0 / nucln[j];
@@ -100,12 +103,14 @@ namespace WottonFederhenCountLibrary
 						double a = Math.Log(b, 4);
 						Console.Write("{0}/{1} {2} {3} ", (nucln[i] + 1), nucln[j], b, a);
 						sum = sum + Math.Log(b, 4);
+						if (sum <= 1.0E-20) sum = 0;
 					}
 					Console.WriteLine("sum = " + sum);
 					cwf[l] = sum / k;
 					hash.Add(s.Substring(l, k), cwf[l]);
 					Console.WriteLine("For key = {0}, value = {1}.", s.Substring(l, k), hash[s.Substring(l, k)]);
 				}
+				else sum = cwf[l] * k;
 			}
 			Console.WriteLine();
 			for (int i = 0; i < cwf.Length; i++) Console.WriteLine("Сложность c {0} по {1} символ = {2}", i + 1, i + k, cwf[i]);//выводим посчитанные сложности
