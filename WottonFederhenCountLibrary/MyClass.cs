@@ -51,8 +51,8 @@ namespace WottonFederhenCountLibrary
 				nucln[CountLetter(nucl, str[i])]++;
 			}
 			Array.Sort(nucln, nucl);
-			Console.WriteLine("В первой рамке:");
-			PrintNuclNumb(nucln, nucl);//кол-во нуклеотидов в рамке
+			//Console.WriteLine("В первой рамке:");
+			//PrintNuclNumb(nucln, nucl);//кол-во нуклеотидов в рамке
 			uint nuclnSum = 0; //сумма количеств нуклеотидов в числителе прибавляемой дроби
 			for (int i = 0; i < nucln.Length - 1; i++)//считаем сумму произведений в первом окне
 			{
@@ -60,14 +60,14 @@ namespace WottonFederhenCountLibrary
 				for (int it = 1; it <= nucln[i + 1]; it++)
 				{
 					sum += Math.Log((nuclnSum + it) / (double)it, 4);// (nucln[0]+it)/it * ... * (nucln[0]+nucln[1])/nucln[1]
-					Console.Write(" {0}/{1} ", (nuclnSum + it), it);
-					Console.WriteLine(" sum = " + sum);
+					//Console.Write(" {0}/{1} ", (nuclnSum + it), it);
+					//Console.WriteLine(" sum = " + sum);
 				}
 			}
 			cwf[0] = sum / k;
-			string s0 = new string(str);
-			hash.Add(s0.Substring(0, k), cwf[0]);
-			Console.WriteLine("For key = {0}, value = {1}.",s0.Substring(0, k), hash[s0.Substring(0, k)]);
+			//string s0 = new string(str);
+			hash.Add(String.Join(" ",nucln), cwf[0]);
+			//Console.WriteLine("For key = {0}, value = {1}.",s0.Substring(0, k), hash[String.Join(" ", nucln)]);
 			return sum;
 		}
 		//Считает сложность по Вудон-Федерхену
@@ -78,42 +78,51 @@ namespace WottonFederhenCountLibrary
 			cwf = new double[str.Length - k + 1];
 			uint[] nucln = new uint[nucl.Length];//массив с количеством нуклеотидов в окне
 			double sum = CountInFirstFrame(str, k, nucl, cwf, nucln, ref hash);//в первом окне
-			Console.WriteLine("Сдвигаем рамку:");
+			//Console.WriteLine("Сдвигаем рамку:");
 
-			string s = new string(str);
-
+			//string s = new string(str);
+			uint[] m = new uint[nucln.Length];
+			uint i, j;
+			double b;
 			for (int l = 1; l <= str.Length - k; l++)//двигаем рамку и добавляем новые члены в сумму и считаем cwf
 			{
-				PrintNuclNumb(nucln, nucl);
+				//PrintNuclNumb(nucln, nucl);
 
-				uint i, j;
-				double b;
 				i = CountLetter(nucl, str[l - 1]);//удаляемый символ
 				j = CountLetter(nucl, str[l - 1 + k]);//добавляемый символ
 				nucln[i]--;					
-				Console.Write("-" + nucl[i] + " ");
+				//Console.Write("-" + nucl[i] + " ");
 				nucln[j]++;
-				Console.Write("+" + nucl[j] + " ");
-				if (!(hash.TryGetValue(s.Substring(l, k), out cwf[l])))//если последовательности нет в хэш-таблице
+				//Console.Write("+" + nucl[j] + "\n");
+				//foreach (uint q in nucln) Console.Write(q + " ");
+				m = (uint[])nucln.Clone();
+				Array.Sort(m);
+				//foreach (uint q in nucln) Console.Write(q + " ");
+				if (!(hash.TryGetValue(String.Join(" ", m), out cwf[l])))//если последовательности нет в хэш-таблице
 				{
 					if (i != j)//если разные символы
 					{
 						if (nucln[i] == 0) b = 1.0 / nucln[j];
 						else b = (nucln[i] + 1) * 1.0 / nucln[j];
-						double a = Math.Log(b, 4);
-						Console.Write("{0}/{1} {2} {3} ", (nucln[i] + 1), nucln[j], b, a);
+						//double a = Math.Log(b, 4);
+						//Console.Write("{0}/{1} {2} {3} ", (nucln[i] + 1), nucln[j], b, a);
 						sum = sum + Math.Log(b, 4);
 						if (sum <= 1.0E-20) sum = 0;
 					}
-					Console.WriteLine("sum = " + sum);
+					//Console.WriteLine("sum = " + sum);
 					cwf[l] = sum / k;
-					hash.Add(s.Substring(l, k), cwf[l]);
-					Console.WriteLine("For key = {0}, value = {1}.", s.Substring(l, k), hash[s.Substring(l, k)]);
+					hash.Add(String.Join(" ", m), cwf[l]);
+					//Console.WriteLine("For key = {0}, value = {1}.", s.Substring(l, k), hash[String.Join(" ", m)]);
 				}
 				else sum = cwf[l] * k;
 			}
 			Console.WriteLine();
-			for (int i = 0; i < cwf.Length; i++) Console.WriteLine("Сложность c {0} по {1} символ = {2}", i + 1, i + k, cwf[i]);//выводим посчитанные сложности
+			for (int t = 0; t < cwf.Length; t++) Console.WriteLine("Сложность c {0} по {1} символ = {2}", t + 1, t + k, cwf[t]);//выводим посчитанные сложности
+			Console.WriteLine("\nВ хэше:");
+			foreach (var w in hash)
+			{
+				Console.WriteLine(w.Key + " " + w.Value);
+			}
 		}
 	}
 }
