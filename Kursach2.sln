@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WottonFederhenCountLibrary"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testhash", "testhash\testhash.csproj", "{231CE1A8-579B-423E-8B84-EF59415B03CD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CountTheNumberOfHashes", "CountTheNumberOfHashes\CountTheNumberOfHashes.csproj", "{BDC23AA5-620A-4919-9868-4B4356B8B425}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCalculating", "TestCalculating\TestCalculating.csproj", "{EDBA528A-BF14-476B-9930-D91B4F29B6F2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -25,5 +29,13 @@ Global
 		{231CE1A8-579B-423E-8B84-EF59415B03CD}.Debug|x86.Build.0 = Debug|x86
 		{231CE1A8-579B-423E-8B84-EF59415B03CD}.Release|x86.ActiveCfg = Release|x86
 		{231CE1A8-579B-423E-8B84-EF59415B03CD}.Release|x86.Build.0 = Release|x86
+		{BDC23AA5-620A-4919-9868-4B4356B8B425}.Debug|x86.ActiveCfg = Debug|x86
+		{BDC23AA5-620A-4919-9868-4B4356B8B425}.Debug|x86.Build.0 = Debug|x86
+		{BDC23AA5-620A-4919-9868-4B4356B8B425}.Release|x86.ActiveCfg = Release|x86
+		{BDC23AA5-620A-4919-9868-4B4356B8B425}.Release|x86.Build.0 = Release|x86
+		{EDBA528A-BF14-476B-9930-D91B4F29B6F2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EDBA528A-BF14-476B-9930-D91B4F29B6F2}.Debug|x86.Build.0 = Debug|Any CPU
+		{EDBA528A-BF14-476B-9930-D91B4F29B6F2}.Release|x86.ActiveCfg = Release|Any CPU
+		{EDBA528A-BF14-476B-9930-D91B4F29B6F2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
