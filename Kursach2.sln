@@ -5,11 +5,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kursach2", "Kursach2.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WottonFederhenCountLibrary", "WottonFederhenCountLibrary\WottonFederhenCountLibrary.csproj", "{D286E51D-1F17-4FB3-A2C7-D7CCDA4B4EBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "testhash", "testhash\testhash.csproj", "{231CE1A8-579B-423E-8B84-EF59415B03CD}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CountTheNumberOfHashes", "CountTheNumberOfHashes\CountTheNumberOfHashes.csproj", "{BDC23AA5-620A-4919-9868-4B4356B8B425}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCalculating", "TestCalculating\TestCalculating.csproj", "{EDBA528A-BF14-476B-9930-D91B4F29B6F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "A2", "A2\A2.csproj", "{82FA1C87-4934-474D-BC23-9EC6A14493CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WottonCountLibrary2", "WottonCountLibrary2\WottonCountLibrary2.csproj", "{B3DE9A20-5388-4A81-B164-CFA0EDA49BC2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +27,6 @@ Global
 		{D286E51D-1F17-4FB3-A2C7-D7CCDA4B4EBD}.Debug|x86.Build.0 = Debug|Any CPU
 		{D286E51D-1F17-4FB3-A2C7-D7CCDA4B4EBD}.Release|x86.ActiveCfg = Release|Any CPU
 		{D286E51D-1F17-4FB3-A2C7-D7CCDA4B4EBD}.Release|x86.Build.0 = Release|Any CPU
-		{231CE1A8-579B-423E-8B84-EF59415B03CD}.Debug|x86.ActiveCfg = Debug|x86
-		{231CE1A8-579B-423E-8B84-EF59415B03CD}.Debug|x86.Build.0 = Debug|x86
-		{231CE1A8-579B-423E-8B84-EF59415B03CD}.Release|x86.ActiveCfg = Release|x86
-		{231CE1A8-579B-423E-8B84-EF59415B03CD}.Release|x86.Build.0 = Release|x86
 		{BDC23AA5-620A-4919-9868-4B4356B8B425}.Debug|x86.ActiveCfg = Debug|x86
 		{BDC23AA5-620A-4919-9868-4B4356B8B425}.Debug|x86.Build.0 = Debug|x86
 		{BDC23AA5-620A-4919-9868-4B4356B8B425}.Release|x86.ActiveCfg = Release|x86
@@ -37,5 +35,13 @@ Global
 		{EDBA528A-BF14-476B-9930-D91B4F29B6F2}.Debug|x86.Build.0 = Debug|Any CPU
 		{EDBA528A-BF14-476B-9930-D91B4F29B6F2}.Release|x86.ActiveCfg = Release|Any CPU
 		{EDBA528A-BF14-476B-9930-D91B4F29B6F2}.Release|x86.Build.0 = Release|Any CPU
+		{82FA1C87-4934-474D-BC23-9EC6A14493CE}.Debug|x86.ActiveCfg = Debug|x86
+		{82FA1C87-4934-474D-BC23-9EC6A14493CE}.Debug|x86.Build.0 = Debug|x86
+		{82FA1C87-4934-474D-BC23-9EC6A14493CE}.Release|x86.ActiveCfg = Release|x86
+		{82FA1C87-4934-474D-BC23-9EC6A14493CE}.Release|x86.Build.0 = Release|x86
+		{B3DE9A20-5388-4A81-B164-CFA0EDA49BC2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B3DE9A20-5388-4A81-B164-CFA0EDA49BC2}.Debug|x86.Build.0 = Debug|Any CPU
+		{B3DE9A20-5388-4A81-B164-CFA0EDA49BC2}.Release|x86.ActiveCfg = Release|Any CPU
+		{B3DE9A20-5388-4A81-B164-CFA0EDA49BC2}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
