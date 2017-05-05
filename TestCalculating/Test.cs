@@ -12,7 +12,7 @@ namespace TestCalculating
 		{
 			char[] nucl = { 'A', 'T', 'G', 'C' };
 			Dictionary<string, double> hash = new Dictionary<string, double>();
-			Assert.AreEqual(WottonFederhenCountLibrary.WottonCount.CountInFirstFrame(new char[] { 'A', 'G', 'T', 'C', 'A', 'C' }, 3, nucl, new double[4], new uint[4], ref hash),Math.Log(6,4));//example test for CountInFirstFrame
+			Assert.AreEqual(WottonFederhenCountLibrary.WottonCount.CountInFirstFrame("AGTCAC", 3),Math.Log(6,4));//example test for CountInFirstFrame
 		}
 	}
 }

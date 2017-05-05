@@ -4,11 +4,15 @@ using System.Text.RegularExpressions;
 using System.Collections.Generic;
 namespace WottonFederhenCountLibrary
 {
-    public static class WottonCount
+    public class WottonCount
     {
-        static Random rnd = new Random();
+        static char[] nucl = { 'A', 'T', 'G', 'C' };//нуклеотиды
+        static uint[] nucln = new uint[nucl.Length];//массив с количеством нуклеотидов в окне
+        static Dictionary<string, double> hash = new Dictionary<string, double>();//хэш
+		static Random rnd = new Random();
+        public WottonCount(){}
         //Создает цепочку ДНК из случайных нуклеотидов
-        public static void GenerateRndStr(out char[] str, uint n, char[] nucl)
+        public static void GenerateRndStr(out char[] str, uint n)
         {
             str = new char[n];
             for (int i = 0; i < n; i++)
@@ -17,11 +21,11 @@ namespace WottonFederhenCountLibrary
             }
         }
         //Получает последовательность из файла
-        public static char[] GetNuclStr(char[] nucl, ref string path){
+        public string GetNuclStr(ref string path){
             string s0, s = "";
-            char[] str = new char[]{'-'};
 			string[] FastaExt = { "..fas", ".fasta", ".fna", ".ffn", ".faa", ".frn" };//расширения FASTA файлов
-            if (path != null & path != "" & !path.Contains("/")) path = Path.Combine(@"../..", path);//добавляем путь к файлу, если введено только название
+            path = Console.ReadLine();
+            if (path != null & path != "" & !path.Contains("/")) path = Path.Combine(@"/Users/Aska/Projects/Kursach2", path);//добавляем путь к файлу, если введено только название
 			if (Array.IndexOf(FastaExt, Path.GetExtension(path)) == -1) throw new ArgumentOutOfRangeException(null, "Некорректное расширение файла. Файл должен быть в формате FASTA.");//проверяем расширение
 			//Открытие файла
 			using (StreamReader f = File.OpenText(path))
@@ -29,36 +33,28 @@ namespace WottonFederhenCountLibrary
                 try{
 					s0 = f.ReadLine();
 					Console.WriteLine("\nОписание последовательности: " + s0.TrimStart('>') + "\n");
-					s = f.ReadToEnd();//считываем последовательность
+                    s = f.ReadToEnd();//считываем последовательность
                     s = Regex.Replace(s, @"\s", "");//удаляем пробелы и пр
-					str = s.ToCharArray();
+                    char[] str = s.ToCharArray();
                     for (int i = 0; i < str.Length; i++)//заменяем неизвестные нуклеотиды случайными
                     {
                         str[i] = (str[i] == 'N') ? nucl[rnd.Next(0, nucl.Length)] : str[i];
                     }
+                    s = String.Join("", str);
 			    }
 				catch (Exception e)
 			    {
 				    throw e;
 			    }
 			}
-            return str;
+            return s;
         }
-		//Печатает цепочку ДНК
-		public static void PrintStr(char[] str)
-		{
-			foreach (char letter in str)
-			{
-				Console.Write(letter + "");
-			}
-			Console.WriteLine();
-		}
 		//Выводит количество найденных в окне нуклеотидов
-		public static void PrintNuclNumb(uint[] nucln, char[] nucl)
+		public static void PrintNuclNumb(uint[] nucln)
 		{
 			for (uint i = 0; i < nucln.Length; i++)
 			{
-				Console.Write("{0}: {1} ", nucl[i], nucln[i]);
+                Console.Write("{0}: {1} ", nucl[i], nucln[i]);
 			}
 			Console.WriteLine();
 		}
@@ -73,10 +69,10 @@ namespace WottonFederhenCountLibrary
 			return i;
 		}
 		//CWF в первом окне
-		public static double CountInFirstFrame(char[] str, int k, char[] nucl, double[] cwf, uint[] nucln, ref Dictionary<string, double> hash)
+		public static double CountInFirstFrame(string str, int k)
 		{
 			double sum = 0;
-			for (uint i = 0; i < k; i++)//считаем кол-во нуклеотидов в окне по типам
+			for (int i = 0; i < k; i++)//считаем кол-во нуклеотидов в окне по типам
 			{
 				nucln[CountLetter(nucl, str[i])]++;
 			}
@@ -94,20 +90,19 @@ namespace WottonFederhenCountLibrary
 					//Console.WriteLine(" sum = " + sum);
 				}
 			}
-			cwf[0] = sum / k;
 			//string s0 = new string(str);
-			hash.Add(String.Join(" ",nucln), cwf[0]);
+			
 			//Console.WriteLine("For key = {0}, value = {1}.",s0.Substring(0, k), hash[String.Join(" ", nucln)]);
 			return sum;
 		}
-		//Считает сложность по Вудон-Федерхену
-		public static void CountWF(char[] str, int k, char[] nucl, out double[] cwf)
+		//Считает сложность по Вудон-Федерхену "впрямую"
+		public static void CountWF(string str, int k)
 		{
-			Dictionary<string, double> hash = new Dictionary<string, double>();
+			double[] cwf = new double[str.Length - k + 1];
 
-			cwf = new double[str.Length - k + 1];
-			uint[] nucln = new uint[nucl.Length];//массив с количеством нуклеотидов в окне
-			double sum = CountInFirstFrame(str, k, nucl, cwf, nucln, ref hash);//в первом окне
+			double sum = CountInFirstFrame(str, k);//в первом окне
+            cwf[0] = sum / k;
+            hash.Add(String.Join(" ", nucln), cwf[0]);
 			//Console.WriteLine("Сдвигаем рамку:");
 
 			//string s = new string(str);
