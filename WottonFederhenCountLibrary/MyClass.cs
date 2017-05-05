@@ -1,25 +1,55 @@
 ﻿using System;
+using System.IO;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 namespace WottonFederhenCountLibrary
 {
-	public static class WottonCount
-	{
-		static Random rnd = new Random();
-		//Создает цепочку ДНК из случайных нуклеотидов
-		public static void GenerateRndStr(out char[] str, uint n, char[] nucl)
-		{
-			str = new char[n];
-			for (int i = 0; i < n; i++)
+    public static class WottonCount
+    {
+        static Random rnd = new Random();
+        //Создает цепочку ДНК из случайных нуклеотидов
+        public static void GenerateRndStr(out char[] str, uint n, char[] nucl)
+        {
+            str = new char[n];
+            for (int i = 0; i < n; i++)
+            {
+                str[i] = nucl[rnd.Next(nucl.Length)];
+            }
+        }
+        //Получает последовательность из файла
+        public static char[] GetNuclStr(char[] nucl, ref string path){
+            string s0, s = "";
+            char[] str = new char[]{'-'};
+			string[] FastaExt = { "..fas", ".fasta", ".fna", ".ffn", ".faa", ".frn" };//расширения FASTA файлов
+            if (path != null & path != "" & !path.Contains("/")) path = Path.Combine(@"../..", path);//добавляем путь к файлу, если введено только название
+			if (Array.IndexOf(FastaExt, Path.GetExtension(path)) == -1) throw new ArgumentOutOfRangeException(null, "Некорректное расширение файла. Файл должен быть в формате FASTA.");//проверяем расширение
+			//Открытие файла
+			using (StreamReader f = File.OpenText(path))
 			{
-				str[i] = nucl[rnd.Next(nucl.Length)];
+                try{
+					s0 = f.ReadLine();
+					Console.WriteLine("\nОписание последовательности: " + s0.TrimStart('>') + "\n");
+					s = f.ReadToEnd();//считываем последовательность
+                    s = Regex.Replace(s, @"\s", "");//удаляем пробелы и пр
+					str = s.ToCharArray();
+                    for (int i = 0; i < str.Length; i++)//заменяем неизвестные нуклеотиды случайными
+                    {
+                        str[i] = (str[i] == 'N') ? nucl[rnd.Next(0, nucl.Length)] : str[i];
+                    }
+			    }
+				catch (Exception e)
+			    {
+				    throw e;
+			    }
 			}
-		}
+            return str;
+        }
 		//Печатает цепочку ДНК
 		public static void PrintStr(char[] str)
 		{
 			foreach (char letter in str)
 			{
-				Console.Write(letter + " ");
+				Console.Write(letter + "");
 			}
 			Console.WriteLine();
 		}
@@ -54,7 +84,7 @@ namespace WottonFederhenCountLibrary
 			//Console.WriteLine("В первой рамке:");
 			//PrintNuclNumb(nucln, nucl);//кол-во нуклеотидов в рамке
 			uint nuclnSum = 0; //сумма количеств нуклеотидов в числителе прибавляемой дроби
-			for (int i = 0; i < nucln.Length - 1; i++)//считаем сумму произведений в первом окне
+			for (int i = 0; i < nucln. Length - 1; i++)//считаем сумму произведений в первом окне
 			{
 				nuclnSum += nucln[i];
 				for (int it = 1; it <= nucln[i + 1]; it++)
