@@ -7,8 +7,10 @@ namespace WottonCountLibrary2
 {
     public class BinomCount : WottonCount
     {
-        char[] nucl = { 'A', 'T', 'G', 'C' };
+        char[] nucl;
+
         public BinomCount() { }
+        public BinomCount(char[] nucl):base(nucl){}
         public static void BinomCountWF(string s, int k){
             Console.WriteLine("Yea");
         }

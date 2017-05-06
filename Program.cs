@@ -16,7 +16,7 @@ namespace Kursach
 				try
 				{
                     Console.Clear();
-                    WottonCount w = new WottonCount();
+                    WottonCount w = new WottonCount(nucl);
                     /*Console.WriteLine("Введите длину последовательности:");
 					if (!uint.TryParse(Console.ReadLine(), out n) || n == 0)
 						throw new ArgumentOutOfRangeException(null, "Длина последовательности должна быть положительным целым числом.");
