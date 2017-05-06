@@ -6,11 +6,16 @@ namespace WottonFederhenCountLibrary
 {
     public class WottonCount
     {
-        static char[] nucl = { 'A', 'T', 'G', 'C' };//нуклеотиды
-        static uint[] nucln = new uint[nucl.Length];//массив с количеством нуклеотидов в окне
-        static Dictionary<string, double> hash = new Dictionary<string, double>();//хэш
+        static char[] nucl;//нуклеотиды
+        static uint[] nucln; //массив с количеством нуклеотидов в окне
+        static Dictionary<string, double> hash;//хэш
 		static Random rnd = new Random();
         public WottonCount(){}
+        public WottonCount(char[] nucl){
+            nucln = new uint[nucl.Length];
+            WottonCount.nucl = nucl;
+            hash = new Dictionary<string, double>();
+        }
         //Создает цепочку ДНК из случайных нуклеотидов
         public static void GenerateRndStr(out char[] str, uint n)
         {
@@ -50,7 +55,7 @@ namespace WottonFederhenCountLibrary
             return s;
         }
 		//Выводит количество найденных в окне нуклеотидов
-		public static void PrintNuclNumb(uint[] nucln)
+		public static void PrintNuclNumb()
 		{
 			for (uint i = 0; i < nucln.Length; i++)
 			{
@@ -105,13 +110,12 @@ namespace WottonFederhenCountLibrary
             hash.Add(String.Join(" ", nucln), cwf[0]);
 			//Console.WriteLine("Сдвигаем рамку:");
 
-			//string s = new string(str);
 			uint[] m = new uint[nucln.Length];
 			uint i, j;
 			double b;
 			for (int l = 1; l <= str.Length - k; l++)//двигаем рамку и добавляем новые члены в сумму и считаем cwf
 			{
-				//PrintNuclNumb(nucln, nucl);
+				//PrintNuclNumb();
 
 				i = CountLetter(nucl, str[l - 1]);//удаляемый символ
 				j = CountLetter(nucl, str[l - 1 + k]);//добавляемый символ
@@ -137,7 +141,7 @@ namespace WottonFederhenCountLibrary
 					//Console.WriteLine("sum = " + sum);
 					cwf[l] = sum / k;
 					hash.Add(String.Join(" ", m), cwf[l]);
-					//Console.WriteLine("For key = {0}, value = {1}.", s.Substring(l, k), hash[String.Join(" ", m)]);
+					//Console.WriteLine("For key = {0}, value = {1}.", str.Substring(l, k), hash[String.Join(" ", m)]);
 				}
 				else sum = cwf[l] * k;
 			}

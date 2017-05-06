@@ -8,13 +8,14 @@ namespace A2
     {
         public static void Main(string[] args)
         {
+            char[] nucl = { 'A', 'T', 'G', 'C' };
 			string path = "", str = "";
             int k;
             do
             {
                 try{
                     Console.Clear();
-                    BinomCount b = new BinomCount();
+                    BinomCount b = new BinomCount(nucl);
 					Console.Write("Введите путь к файлу в виде: /Dir1/Dir2/File.fasta или если он находится в той же директории, что и проект, то введите имя файла: File.fasta: ");
                     str = b.GetNuclStr(ref path);
 					Console.WriteLine("Последовательность:\n" + str);
