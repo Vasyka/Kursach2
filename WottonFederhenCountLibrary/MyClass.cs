@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
@@ -29,7 +29,8 @@ namespace WottonFederhenCountLibrary
         public string GetNuclStr(ref string path){
             string s0, s = "";
 			string[] FastaExt = { "..fas", ".fasta", ".fna", ".ffn", ".faa", ".frn" };//расширения FASTA файлов
-            path = Console.ReadLine();
+            //path = Console.ReadLine();
+            path = "sequence.fasta";
             if (path != null & path != "" & !path.Contains("/")) path = Path.Combine(@"/Users/Aska/Projects/Kursach2", path);//добавляем путь к файлу, если введено только название
 			if (Array.IndexOf(FastaExt, Path.GetExtension(path)) == -1) throw new ArgumentOutOfRangeException(null, "Некорректное расширение файла. Файл должен быть в формате FASTA.");//проверяем расширение
 			//Открытие файла

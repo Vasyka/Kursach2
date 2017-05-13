@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.IO;
 using System.Diagnostics;
 using WottonCountLibrary2;
@@ -11,26 +11,25 @@ namespace A2
             char[] nucl = { 'A', 'T', 'G', 'C' };
 			string path = "", str = "";
             int k;
-            do
+			do
             {
                 try{
                     Console.Clear();
                     BinomCount b = new BinomCount(nucl);
-					Console.Write("Введите путь к файлу в виде: /Dir1/Dir2/File.fasta или если он находится в той же директории, что и проект, то введите имя файла: File.fasta: ");
+					//Console.Write("Введите путь к файлу в виде: /Dir1/Dir2/File.fasta или если он находится в той же директории, что и проект, то введите имя файла: File.fasta: ");
                     str = b.GetNuclStr(ref path);
 					Console.WriteLine("Последовательность:\n" + str);
 					Console.WriteLine("Длина последовательности: " + str.Length + " пар нуклеотидов");
 					Console.Write("Введите длину окна: ");
 					if (!int.TryParse(Console.ReadLine(), out k) || k <= 0 || k > str.Length)
 						throw new ArgumentOutOfRangeException(null, "Длина окна должна быть положительным целым числом, не большим длины самой последовательности.");
-
-					Stopwatch SW = new Stopwatch();//счетчик
-					SW.Start();
+                    var SW = Stopwatch.StartNew();
                     BinomCount.BinomCountWF(str,k);
 					SW.Stop();
 					Console.WriteLine("\nВремя выполнения в миллисекундах: " + Convert.ToString(SW.ElapsedMilliseconds));
 					Console.WriteLine("Время в секундах: " + Convert.ToString(SW.Elapsed.Seconds));
 					Console.WriteLine("Время в тиках: " + Convert.ToString(SW.ElapsedTicks));
+                    SW.Reset();
                 }
 				catch (ArgumentOutOfRangeException ex)
 				{
