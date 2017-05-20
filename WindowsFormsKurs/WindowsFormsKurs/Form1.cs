@@ -28,7 +28,9 @@ namespace WindowsFormsKurs
             Color.Blue,
             Color.Red,
             Color.YellowGreen};
-
+        //Список неиспользованных на данный момент цветов кривых
+        static List<Color> ColorList = colors.ToList<Color>();
+        
         static Random rnd = new Random();
         public static double cwf(int l)
         {
@@ -73,16 +75,15 @@ namespace WindowsFormsKurs
             GraphProperties(myPane);
 
             //Выбираем цвет графика
-            Color CurveColor = colors[myPane.CurveList.Count];
-            /*Color CurveColor = colors[colors.Length - 1];
-            IEnumerable<Color> col = myPane.CurveList.Select(p => p.Color);
-            Color[] curves = colors.Expect(colorCurves);*/
+            Color CurveColor = ColorList[0];
+
+            //Удаляем используемый цвет из списка цветов
+            ColorList.Remove(CurveColor);
 
             //Рисуем график
             LineItem myCurve = myPane.AddCurve(dnaname,
                list, CurveColor, SymbolType.Circle);
             
-
             //Стиль линии
             myCurve.Line.Width = 3;
             
@@ -106,13 +107,13 @@ namespace WindowsFormsKurs
 
             //Добавляем крупную пунктирную сетку по оси X
             myPane.XAxis.MajorGrid.IsVisible = true;
-            myPane.XAxis.MajorGrid.DashOn = 5;
-            myPane.XAxis.MajorGrid.DashOff = 3;
+            myPane.XAxis.MajorGrid.DashOn = 8;
+            myPane.XAxis.MajorGrid.DashOff = 4;
 
             //Добавляем крупную пунктирную сетку по оси Y
             myPane.YAxis.MajorGrid.IsVisible = true;
-            myPane.YAxis.MajorGrid.DashOn = 5;
-            myPane.YAxis.MajorGrid.DashOff = 2;
+            myPane.YAxis.MajorGrid.DashOn = 8;
+            myPane.YAxis.MajorGrid.DashOff = 4;
 
             //Добавляем мелкую пунктирную сетку по оси X
             myPane.XAxis.MinorGrid.IsVisible = true;
@@ -144,6 +145,9 @@ namespace WindowsFormsKurs
             {
                 // Номер графика для удаления
                 int index = 1;
+
+                //Вернем цвет кривой в список
+                ColorList.Add(Pane.CurveList[index].Color);
 
                 // Удалим кривую по индексу
                 Pane.CurveList.RemoveAt(index);
