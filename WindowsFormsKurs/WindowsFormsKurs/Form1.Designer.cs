@@ -32,24 +32,36 @@ namespace WindowsFormsKurs
         {
             this.components = new System.ComponentModel.Container();
             this.addButton = new System.Windows.Forms.Button();
-            this.zedGraphControl1 = new ZedGraph.ZedGraphControl();
             this.rmvButton = new System.Windows.Forms.Button();
+            this.zedGraphControl1 = new ZedGraph.ZedGraphControl();
             this.SuspendLayout();
             // 
             // addButton
             // 
-            this.addButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.addButton.Location = new System.Drawing.Point(246, 426);
+            this.addButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.addButton.Location = new System.Drawing.Point(578, 847);
             this.addButton.Name = "addButton";
-            this.addButton.Size = new System.Drawing.Size(109, 42);
+            this.addButton.Size = new System.Drawing.Size(145, 76);
             this.addButton.TabIndex = 0;
             this.addButton.Text = "Добавить график";
             this.addButton.UseVisualStyleBackColor = true;
             this.addButton.Click += new System.EventHandler(this.addButton_Click);
             // 
+            // rmvButton
+            // 
+            this.rmvButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.rmvButton.Location = new System.Drawing.Point(834, 847);
+            this.rmvButton.Name = "rmvButton";
+            this.rmvButton.Size = new System.Drawing.Size(142, 76);
+            this.rmvButton.TabIndex = 2;
+            this.rmvButton.Text = "Удалить график";
+            this.rmvButton.UseVisualStyleBackColor = true;
+            this.rmvButton.Click += new System.EventHandler(this.rmvButton_Click);
+            // 
             // zedGraphControl1
             // 
-            this.zedGraphControl1.Location = new System.Drawing.Point(4, 4);
+            this.zedGraphControl1.Location = new System.Drawing.Point(13, 14);
+            this.zedGraphControl1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.zedGraphControl1.Name = "zedGraphControl1";
             this.zedGraphControl1.ScrollGrace = 0D;
             this.zedGraphControl1.ScrollMaxX = 0D;
@@ -58,25 +70,14 @@ namespace WindowsFormsKurs
             this.zedGraphControl1.ScrollMinX = 0D;
             this.zedGraphControl1.ScrollMinY = 0D;
             this.zedGraphControl1.ScrollMinY2 = 0D;
-            this.zedGraphControl1.Size = new System.Drawing.Size(675, 417);
-            this.zedGraphControl1.TabIndex = 1;
-            this.zedGraphControl1.Load += new System.EventHandler(this.zedGraphControl1_Load);
-            // 
-            // rmvButton
-            // 
-            this.rmvButton.Location = new System.Drawing.Point(387, 427);
-            this.rmvButton.Name = "rmvButton";
-            this.rmvButton.Size = new System.Drawing.Size(104, 41);
-            this.rmvButton.TabIndex = 2;
-            this.rmvButton.Text = "Удалить график";
-            this.rmvButton.UseVisualStyleBackColor = true;
-            this.rmvButton.Click += new System.EventHandler(this.rmvButton_Click);
+            this.zedGraphControl1.Size = new System.Drawing.Size(1425, 825);
+            this.zedGraphControl1.TabIndex = 3;
             // 
             // Form1
             // 
-            this.ClientSize = new System.Drawing.Size(684, 481);
-            this.Controls.Add(this.rmvButton);
+            this.ClientSize = new System.Drawing.Size(1458, 949);
             this.Controls.Add(this.zedGraphControl1);
+            this.Controls.Add(this.rmvButton);
             this.Controls.Add(this.addButton);
             this.Name = "Form1";
             this.Text = "Курсовая";
@@ -89,8 +90,8 @@ namespace WindowsFormsKurs
         #endregion
 
         private System.Windows.Forms.Button addButton;
-        private ZedGraph.ZedGraphControl zedGraphControl1;
         private System.Windows.Forms.Button rmvButton;
+        private ZedGraph.ZedGraphControl zedGraphControl1;
     }
 }
 
