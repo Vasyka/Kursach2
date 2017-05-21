@@ -6,11 +6,12 @@ using System.Windows.Forms;
 
 namespace WindowsFormsKurs
 {
-    static class Program
+    public static class Program
     {
         /// <summary>
         /// Главная точка входа для приложения.
         /// </summary>
+        public static int FileIndex { get; set; }
         [STAThread]
         static void Main()
         {

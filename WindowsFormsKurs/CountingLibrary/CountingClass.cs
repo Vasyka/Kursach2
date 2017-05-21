@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace CountingLibrary
 {
@@ -113,5 +114,43 @@ namespace CountingLibrary
             return CWF;
         }
 
+    }
+    public class CountingClass2 : CountingClass
+    {
+        public static Dictionary<int, double> LnFactTable(int k)
+        {
+            Dictionary<int, double> hash = new Dictionary<int, double>();
+            hash.Add(0, Math.Log(1, 4));
+            Console.WriteLine(0 + " " + hash[0]);
+            long n = 1;
+            for (int i = 1; i <= k; i++)
+            {
+                hash.Add(i, hash[i - 1] + Math.Log(i, 4));
+                n = n * i;
+            }
+            return hash;
+        }
+        public CountingClass2() { }
+        public CountingClass2(char[] nucl):base(nucl){
+            MessageBox.Show("Hi! i'm a new algorythm and I'm still in developing. But I promise that my update will be soon!");
+        }
+        public static void BinomCountWF(string s, int k)
+        {
+            Console.WriteLine("Yea");
+            Dictionary<int, double> hash = LnFactTable(k);
+            Console.WriteLine("В хэше:");
+            foreach (var e in hash)
+            {
+                Console.WriteLine(e.Key + " " + e.Value);
+            }
+            char[] nucl = { 'A', 'T', 'G', 'C' };
+            /* int[][] nuclk = new int[k][];
+             nuclk[0] = new int[nucl.Length];
+             for (int i = 0,j = 0; i < s.Length; i++){
+                 nuclk[j][CountLetter(nucl,s[i])]++;
+                 nuclk[k + j][CountLetter(nucl, s[i])]--;
+             }*/
+
+        }
     }
 }
