@@ -11,7 +11,6 @@ namespace DrawingLibrary
     public class DrawingClass
     {
         static char[] nucl = { 'A', 'T', 'G', 'C' };
-        CountingClass c = new CountingClass(nucl);
         // Массив цветов графиков
         public static Color[] colors = new Color[] {
             Color.Green,
@@ -36,7 +35,7 @@ namespace DrawingLibrary
 
             //Границы графика по оси X 
             myPane.XAxis.Scale.Min = 14;
-            myPane.XAxis.Scale.Max = 25;
+            myPane.XAxis.Scale.Max = 26;
 
             //Очищаем график от старых кривых
             myPane.CurveList.Clear();
@@ -47,10 +46,9 @@ namespace DrawingLibrary
             a.Invalidate();
         }
 
-        public void AddGraph(ZedGraphControl zgc)//Рисование нового графика
+        public void AddGraph(ZedGraphControl zgc, string[] input)//Рисование нового графика
         {
-            //Открываем файл и получаем входную последовательность
-            string[] input = c.OpenNewFile();
+            //Проверяем входную последовательность
             if (input == null) throw new NullReferenceException("Получена пустая ссылка на последовательность.");
             string dnaString = input[1];
 
@@ -63,10 +61,12 @@ namespace DrawingLibrary
 
                 //Создаем и заполняем список точек
                 PointPairList list = new PointPairList();
-                for (int L = 15; L <= 24; L = L + 3)
+                for (int L = 15; L <= 25; L = L + 2)
                 {
-                    MessageBox.Show("HI", "yea", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                    list.Add(L, c.CountWF(dnaString, L));
+                    //dnaString = "AAAAGGGTTACATAGACTAGGGA";
+                    CountingClass Count = new CountingClass(nucl);
+                    list.Add(L, Count.CWF(dnaString, L));
+                    //MessageBox.Show("Рассчитали одну точку.", "Информация о текущих расчетах", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
                 //Добавляем сетку и легенду
@@ -101,7 +101,7 @@ namespace DrawingLibrary
 
             // Номер графика для удаления
             int index = 1;
-            if (myPane.CurveList.Count <= index) throw new IndexOutOfRangeException("Вы пытались удалить кривую, которой уже нет в списке. Попробуйте еще раз.");
+            if (myPane.CurveList.Count <= index) throw new IndexOutOfRangeException("Вы пытались удалить кривую, которой уже нет на графике. Попробуйте еще раз.");
 
             //Вернем цвет кривой в список
             ColorList.Add(myPane.CurveList[index].Color);
