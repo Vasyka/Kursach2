@@ -1,18 +1,8 @@
-﻿using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Drawing2D;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Text;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using ZedGraph;
 using DrawingLibrary;
 
 namespace WindowsFormsKurs
@@ -41,8 +31,14 @@ namespace WindowsFormsKurs
                     //Вызываем окно диалога с польователем и открываем файл
                     string[] input = OpenNewFile();
 
-                    //Рисуем график
+                    //Запускаем счетчик и рисуем график 
+                    Stopwatch SW = Stopwatch.StartNew();
                     Draw.AddGraph(zedGraphControl1, input);
+                    SW.Stop();
+
+                    //Информация о времени выполнения
+                    string info = "Время выполнения в миллисекундах: " + Convert.ToString(SW.ElapsedMilliseconds) + "\nВремя в секундах: " + Convert.ToString(SW.Elapsed.Seconds) + "\nВремя в тиках: " + Convert.ToString(SW.ElapsedTicks);
+                    MessageBox.Show(info);
                 }
                 else
                 {
