@@ -34,6 +34,8 @@ namespace WindowsFormsKurs
             this.addButton = new System.Windows.Forms.Button();
             this.rmvButton = new System.Windows.Forms.Button();
             this.zedGraphControl1 = new ZedGraph.ZedGraphControl();
+            this.label1 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // addButton
@@ -72,10 +74,35 @@ namespace WindowsFormsKurs
             this.zedGraphControl1.ScrollMinY2 = 0D;
             this.zedGraphControl1.Size = new System.Drawing.Size(1425, 825);
             this.zedGraphControl1.TabIndex = 3;
+            this.zedGraphControl1.Load += new System.EventHandler(this.zedGraphControl1_Load);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.Location = new System.Drawing.Point(12, 856);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(193, 26);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "Выбор алгоритма";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(17, 895);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(155, 34);
+            this.comboBox1.TabIndex = 6;
+            this.comboBox1.Text = "1 алгоритм";
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // Form1
             // 
             this.ClientSize = new System.Drawing.Size(1458, 949);
+            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.zedGraphControl1);
             this.Controls.Add(this.rmvButton);
             this.Controls.Add(this.addButton);
@@ -83,6 +110,7 @@ namespace WindowsFormsKurs
             this.Text = "Курсовая";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -92,6 +120,8 @@ namespace WindowsFormsKurs
         private System.Windows.Forms.Button addButton;
         private System.Windows.Forms.Button rmvButton;
         private ZedGraph.ZedGraphControl zedGraphControl1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
 

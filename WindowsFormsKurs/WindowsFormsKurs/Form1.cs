@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Diagnostics;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using DrawingLibrary;
@@ -10,11 +11,17 @@ namespace WindowsFormsKurs
     public partial class Form1 : Form
     {
         DrawingClass Draw = new DrawingClass();
+        static bool secondAlgFlag = false;
 
         public Form1()
         {
             try {
                 InitializeComponent();
+
+                //Заполняем список значений ComboBox
+                string[] states = new string[] { "1 алгоритм", "2 алгоритм" };
+                comboBox1.Items.AddRange(states);
+
                 Draw.CreateGraph(zedGraphControl1);
             }
             catch (Exception ex)
@@ -33,7 +40,7 @@ namespace WindowsFormsKurs
 
                     //Запускаем счетчик и рисуем график 
                     Stopwatch SW = Stopwatch.StartNew();
-                    Draw.AddGraph(zedGraphControl1, input);
+                    Draw.AddGraph(zedGraphControl1, input, secondAlgFlag);
                     SW.Stop();
 
                     //Информация о времени выполнения
@@ -61,7 +68,13 @@ namespace WindowsFormsKurs
                 // Если есть что удалять
                 if (zedGraphControl1.GraphPane.CurveList.Count > 0)
                 {
-                    Draw.DelGraph(zedGraphControl1);
+                    //Вызываем форму с выбором файла для удаления с графика
+                    Form DelForm = new DeletingForm();
+                    DelForm.Owner = this;
+                    DelForm.ShowDialog();
+
+                    //Удаляем график с выбранным номером
+                    Draw.DelGraph(zedGraphControl1, Program.FileIndex);
                 }
                 else
                 {
@@ -74,12 +87,12 @@ namespace WindowsFormsKurs
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.GetType().FullName + ": " + ex.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         public string[] OpenNewFile()//Открытие окна диалога с пользователем и чтение файла
         {
-            string[] s = new string[2] { "", "" };
+            string[] s = new string[3] { "", "", "" };
             try
             {
                 OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -103,6 +116,10 @@ namespace WindowsFormsKurs
                             s[1] = Regex.Replace(s[1], @"[\sN]", "");//удаляем пробелы и пр
                             if (s[1].Length > 1100000) throw new ArgumentOutOfRangeException(null, "Длина последовательности значительно превышает 1 млн нуклеотидов. Пожалуйста выберите файл с последовательностью меньших размеров.");
                             if (s[1].Length < 25) throw new ArgumentOutOfRangeException(null, "Длина последовательности меньше длины окна. Пожалуйста выберите файл с более длинной последовательностью.");
+
+                            //Получаем имя файла
+                            s[2] = Path.GetFileName(openFileDialog.FileName);
+
                             //Создаем файл с логами и записываем в него обновленную последовательность
                             /*string path = @".\logs.txt";
                             using (StreamWriter sw = File.CreateText(path))
@@ -125,14 +142,24 @@ namespace WindowsFormsKurs
                 else
                 {
                     MessageBox.Show("Вы не выбрали файл.", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    //?Возможно не открывается в старых ОС
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                MessageBox.Show("Невозможно открыть и прочитать файл.", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                throw new Exception("Невозможно открыть и прочитать файл.", e);
             }
             return s;
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)//Выбор алгоритма
+        {
+            if (comboBox1.SelectedIndex == 0)
+            {
+                secondAlgFlag = false;
+            }
+            else {
+                secondAlgFlag = true;
+            }
         }
         private void zedGraphControl1_Load(object sender, EventArgs e)
         {
@@ -142,5 +169,11 @@ namespace WindowsFormsKurs
         {
 
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }
