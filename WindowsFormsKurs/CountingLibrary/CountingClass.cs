@@ -17,7 +17,7 @@ namespace CountingLibrary
         ///Массив с количеством нуклеотидов в окне
         static uint[] nucln;
 
-        //Хэш: строка с количеством нуклеотидов разных типов в окне и сложность
+        //Хэш: строка с количеством нуклеотидов разных типов в окне и сумма(сложность * длину окна)
         static Dictionary<string, double> hash;
 
         //Конструкторы
@@ -52,132 +52,72 @@ namespace CountingLibrary
                 }
             }
 
-            //Console.WriteLine("For key = {0}, value = {1}.",s0.Substring(0, k), hash[String.Join(" ", nucln)]);
+            //Сохраняем сумму в первом окне в хэш
+            hash.Add(String.Join(" ", nucln), sum);
 
-            
-            //Сложность в первом окне
-            double wf0 = sum / k;
-            hash.Add(String.Join(" ", nucln), wf0);
-
-            return wf0;
+            return sum;
         }
 
-        public double CountWF(string str, int k)//Считает сложность по Вудон-Федерхену на всей последовательности
+        public double CWF(string str, int k)//Считает сложность по Вудон-Федерхену на всей последовательности
         {
             uint[] mass = new uint[nucln.Length];
             int i, j;
-            double b;
-            
-            //Массив сложностей на всех промежутках
-            double[] cwf = new double[str.Length - k + 1];
+            double b, temp;
+            double CWF;
 
-            //Суммарная сложность на всей последовательности
+            //Сумма на всей последовательности(общая сложность * N * k)
             double sumWF = 0;
 
-            //Сложность в первом окне
-            sumWF += CountInFirstFrame(str, k);
-            double sum = sumWF * k;
+            //Создаем файл с логами
+            //string path = @".\logs.txt";
+            //using (StreamWriter sw = File.CreateText(path))
+            //{
+               
+                //Сумма в первом окне
+                double sum = CountInFirstFrame(str, k);
+                sumWF = sumWF + sum;
+                //sw.WriteLine("sumWF = " + sumWF);
 
-            //Сдвигаем рамку
-            for (int l = 1; l <= str.Length - k; l++)
-            {
-                //При сдвиге рамки одну букву добавляем, одну удаляем
-                i = Array.IndexOf(nucl, str[l - 1]);//удаляемый символ
-                //добавляемый символ
-                if ((j = Array.IndexOf(nucl, str[l - 1 + k])) == -1) throw new ArgumentOutOfRangeException(null, "В последовательности найдены символы отличающихся от заданных нуклеотидов. Возможно это была РНК или последовательность аминокислот.");
-                nucln[i]--;
-                nucln[j]++;
-
-                //Создаем упорядоченный массив количеств нуклеотидов в окне
-                mass = (uint[])nucln.Clone();
-                Array.Sort(mass);
-
-                //Если последовательности нет в хэш-таблице
-                if (!(hash.TryGetValue(String.Join(" ", mass), out cwf[l])))
+                //Сдвигаем рамку
+                for (int l = 1; l <= str.Length - k; l++)
                 {
-                    if (i != j)//если разные символы
+                    //При сдвиге рамки одну букву добавляем, одну удаляем
+                    i = Array.IndexOf(nucl, str[l - 1]);//удаляемый символ
+                    //добавляемый символ
+                    if ((j = Array.IndexOf(nucl, str[l - 1 + k])) == -1) throw new ArgumentOutOfRangeException(null, "В последовательности найдены символы отличающихся от заданных нуклеотидов. Возможно это была РНК или последовательность аминокислот.");
+                    nucln[i]--;
+                    nucln[j]++;
+
+                    //Создаем упорядоченный массив количеств нуклеотидов в окне
+                    mass = (uint[])nucln.Clone();
+                    Array.Sort(mass);
+
+                    //Если последовательности нет в хэш-таблице
+                    if (!(hash.TryGetValue(String.Join(" ", mass), out temp)))
                     {
-                        if (nucln[i] == 0) b = 1.0 / nucln[j];
-                        else b = (nucln[i] + 1) * 1.0 / nucln[j];
-                        //double a = Math.Log(b, 4);
-                        //Console.Write("{0}/{1} {2} {3} ", (nucln[i] + 1), nucln[j], b, a);
-                        sum = sum + Math.Log(b, 4);
-                        if (sum <= 1.0E-20) sum = 0;
+                        if (i != j)//если разные символы
+                        {
+                            //В сумму добавляем частное количеств нового и старого символа
+                            b = (nucln[i] + 1) * 1.0 / nucln[j]; 
+                            sum = sum + Math.Log(b, 4);
+                            
+                            //Если все одинаковые
+                            if (sum <= 1.0E-20) sum = 0;
+                         }
+                        hash.Add(String.Join(" ", mass), sum);
                     }
-                    //Console.WriteLine("sum = " + sum);
-                    cwf[l] = sum / k;
-                    hash.Add(String.Join(" ", mass), cwf[l]);
-                    //Console.WriteLine("For key = {0}, value = {1}.", str.Substring(l, k), hash[String.Join(" ", m)]);
+                    else sum = temp;
+
+                    //Добавляем в общую сумму
+                    sumWF += sum;
+                    //sw.WriteLine("sumWF = " + sumWF + ", value = " + sum);
                 }
-                else sum = cwf[l] * k;
-                sumWF += cwf[l];
-            }
-            /*Console.WriteLine();
-            for (int t = 0; t < cwf.Length; t++) Console.WriteLine("Сложность c {0} по {1} символ = {2}", t + 1, t + k, cwf[t]);//выводим посчитанные сложности
-            Console.WriteLine("\nВ хэше:");
-            foreach (var w in hash)
-            {
-                Console.WriteLine(w.Key + " " + w.Value);
-            }*/
-            return sumWF / str.Length;
+                CWF= sumWF / k / str.Length;
+                //sw.WriteLine("CWF = " + CWF);
+            //}
+            
+            return CWF;
         }
 
-        public string[] OpenNewFile()//Открытие и чтение файла
-        {
-            string[] s = new string[2] { "", "" };
-            try
-            {
-                OpenFileDialog openFileDialog = new OpenFileDialog();
-
-                //Фильтр FASTA файлов
-                openFileDialog.Filter = "fasta files (*.fasta; *..fas; *.fna; *.ffn; *.faa; *.frn; *.fa; *.seq)|*.fasta; *..fas; *.fna; *.ffn; *.faa; *.frn; *.fa; *.seq";
-
-                //Открываем окно диалога с пользователем
-                if (openFileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    //Открываем файл
-                    using (StreamReader f = File.OpenText(openFileDialog.FileName))
-                    {
-                        try
-                        {
-                            //Cчитываем информацию о последовательности
-                            s[0] = f.ReadLine().TrimStart('>');
-
-                            //Считываем саму последовательность
-                            s[1] = f.ReadToEnd();
-                            s[1] = Regex.Replace(s[1], @"[\sN]", "");//удаляем пробелы и пр
-                            if (s[1].Length > 1100000) throw new ArgumentOutOfRangeException(null, "Длина последовательности значительно превышает 1 млн нуклеотидов. Пожалуйста выберите файл с последовательностью меньших размеров.");
-
-                            //Создаем файл и записываем в него обновленную последовательность
-                            string path = @".\logs.txt";
-                            using (StreamWriter sw = File.CreateText(path))
-                            {
-                                sw.WriteLine("\nОписание последовательности: " + s[0] + "\n");
-                                sw.WriteLine("Длина последовательности: " + s[1].Length + " пар нуклеотидов");
-                                sw.WriteLine(s[1]);
-                            }
-                        }
-                        catch(ArgumentOutOfRangeException e)
-                        {
-                            MessageBox.Show(e.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                        catch (Exception e)
-                        {
-                            throw e;
-                        }
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Вы не выбрали файл.", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    //?Возможно не открывается в старых ОС
-                }
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Невозможно открыть и прочитать файл.", "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            return s;
-        }
     }
 }
