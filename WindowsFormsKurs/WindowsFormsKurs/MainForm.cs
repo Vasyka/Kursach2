@@ -5,23 +5,28 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using DrawingLibrary;
+using CountingLibrary;
 
 namespace WindowsFormsKurs
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         DrawingClass Draw = new DrawingClass();
         static bool secondAlgFlag = false;
 
-        public Form1()
+        public MainForm()
         {
             try {
                 InitializeComponent();
 
+                //Заполняем таблицы логарифмов
+                CountingClass2.LogCountTable();
+                
                 //Заполняем список значений ComboBox
                 string[] states = new string[] { "1 алгоритм", "2 алгоритм" };
                 comboBox1.Items.AddRange(states);
 
+                //Заполняем подписи осей и графика
                 Draw.CreateGraph(zedGraphControl1);
             }
             catch (Exception ex)

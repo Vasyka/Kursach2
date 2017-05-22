@@ -1,16 +1,17 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace CountingLibrary
 {
-    public class CountingClass
+    public class CountingClass//1 алгоритм
     {
         //Массив нуклеотидов
-        static char[] nucl;
+        public static char[] nucl;
 
         ///Массив с количеством нуклеотидов в окне
-        static uint[] nucln;
+        public static int[] nucln;
 
         //Хэш: строка с количеством нуклеотидов разных типов в окне и сумма(сложность * длину окна)
         static Dictionary<string, double> hash;
@@ -19,7 +20,7 @@ namespace CountingLibrary
         public CountingClass() { }
         public CountingClass(char[] nucl)
         {
-            nucln = new uint[nucl.Length];
+            nucln = new int[nucl.Length];
             CountingClass.nucl = nucl;
             hash = new Dictionary<string, double>();
         }
@@ -37,7 +38,7 @@ namespace CountingLibrary
             Array.Sort(nucln, nucl);
 
             //Считаем сумму произведений в первом окне
-            uint nuclnSum = 0; //сумма количеств нуклеотидов в числителе прибавляемой дроби
+            int nuclnSum = 0; //сумма количеств нуклеотидов в числителе прибавляемой дроби
             for (int i = 0; i < nucln.Length - 1; i++)
             {
                 nuclnSum += nucln[i];
@@ -53,7 +54,7 @@ namespace CountingLibrary
             return sum;
         }
 
-        public double CWF(string str, int k)//Считает сложность по Вудон-Федерхену на всей последовательности
+        public virtual double CWF(string str, int k)//Считает сложность по Вудон-Федерхену на всей последовательности
         {
             uint[] mass = new uint[nucln.Length];
             int i, j;
@@ -115,42 +116,96 @@ namespace CountingLibrary
         }
 
     }
-    public class CountingClass2 : CountingClass
+ 
+    public class CountingClass2 : CountingClass//2 алгоритм
     {
-        public static Dictionary<int, double> LnFactTable(int k)
-        {
-            Dictionary<int, double> hash = new Dictionary<int, double>();
-            hash.Add(0, Math.Log(1, 4));
-            Console.WriteLine(0 + " " + hash[0]);
-            long n = 1;
-            for (int i = 1; i <= k; i++)
-            {
-                hash.Add(i, hash[i - 1] + Math.Log(i, 4));
-                n = n * i;
-            }
-            return hash;
-        }
-        public CountingClass2() { }
-        public CountingClass2(char[] nucl):base(nucl){
-            MessageBox.Show("Hi! i'm a new algorythm and I'm still in developing. But I promise that my update will be soon!");
-        }
-        public static void BinomCountWF(string s, int k)
-        {
-            Console.WriteLine("Yea");
-            Dictionary<int, double> hash = LnFactTable(k);
-            Console.WriteLine("В хэше:");
-            foreach (var e in hash)
-            {
-                Console.WriteLine(e.Key + " " + e.Value);
-            }
-            char[] nucl = { 'A', 'T', 'G', 'C' };
-            /* int[][] nuclk = new int[k][];
-             nuclk[0] = new int[nucl.Length];
-             for (int i = 0,j = 0; i < s.Length; i++){
-                 nuclk[j][CountLetter(nucl,s[i])]++;
-                 nuclk[k + j][CountLetter(nucl, s[i])]--;
-             }*/
+        //Таблица соответствий чисел и логарифмов факториалов
+        public static Dictionary<int, double> facTable;
 
+        //Таблица соответствий чисел и логарифмов чисел
+        public static Dictionary<int, double> table;
+
+        //Создаем и вычисляем таблицы логарифмов от факториалов и логарифмов чисел
+        public static void LogCountTable()
+        {
+            table = new Dictionary<int, double>();
+            facTable = new Dictionary<int, double>();
+            int maxWindow = 25;
+            facTable.Add(0, Math.Log(1, 4));
+            for (int i = 1; i <= maxWindow; i++)
+            {
+                table.Add(i, Math.Log(i, 4));
+                facTable.Add(i, facTable[i - 1] + table[i]);
+            }
+        }
+
+        //Конструкторы
+        public CountingClass2() { }
+        public CountingClass2(char[] nucl) : base(nucl){
+        }
+
+        public static new double CountInFirstFrame(string str, int k)//Расчитывает сложность по Вудону-Федерхену в первом окне
+        {
+            double sum = 0;
+
+            //Считаем кол-во нуклеотидов в окне по типам
+            for (int i = 0; i < k; i++)
+            {
+                int index = Array.IndexOf(nucl, str[i]);
+                nucln[index]++;
+            }
+            Array.Sort(nucln, nucl);
+
+            //Считаем логарифм произведения факториалов в первом окне
+            for(int i = 0; i < nucln.Length; i++)
+            {
+                sum += facTable[nucln[i]];
+            }
+
+            return sum;
+        }
+
+        //Рассчитывает сложность по Вудону-Федерхену на всей последовательности
+        public override double CWF(string str, int k)
+        {
+            double sum = 0, sumWF = 0, CWF;
+            int i, j;
+
+            //Создаем файл с логами
+            /*string path = @"C:\Users\Aska\logs.txt";
+            using (StreamWriter sw = new StreamWriter(path))
+            {*/
+                //Сумма в первом окне
+                sum = CountInFirstFrame(str,k);
+                sumWF += sum;
+                //sw.WriteLine("sumWF = " + sumWF);
+
+                //Сдвигаем рамку
+                for (int l = 1; l <= str.Length - k; l++)
+                {
+                    //При сдвиге рамки одну букву добавляем, одну удаляем
+                    i = Array.IndexOf(nucl, str[l - 1]);//удаляемый символ
+                    //добавляемый символ
+                    if ((j = Array.IndexOf(nucl, str[l - 1 + k])) == -1) throw new ArgumentOutOfRangeException(null, "В последовательности найдены символы отличающихся от заданных нуклеотидов. Возможно это была РНК или последовательность аминокислот.");
+                    nucln[j]++;
+                    if (i != j)//если разные символы
+                    {
+                        //В сумму добавляем логарифм нового и вычитаем старого символа
+                        if (nucln[i] != 0) sum = sum - table[nucln[i]];
+                        sum = sum + table[nucln[j]];
+                        //Если все одинаковые
+                        if (sum <= 1.0E-20) sum = 0;
+                    }
+                    nucln[i]--;
+     
+                    //Добавляем в общую сумму
+                    sumWF += sum;
+                    //sw.WriteLine("sumWF = " + sumWF + ", value = " + sum);
+                }
+                CWF = (facTable[k] * (str.Length - k + 1) - sumWF)/ (str.Length * k);
+                //sw.WriteLine("CWF = " + CWF);
+            //}
+            return CWF;
         }
     }
 }

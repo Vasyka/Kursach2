@@ -30,8 +30,6 @@ namespace WindowsFormsKurs
                 //Инициализируем поле с номером удаляемого графика
                 Program.FileIndex = -1;
                 nodeIndex = -1;
-
-                FileNode.Expand();
             }
             catch(Exception e)
             {

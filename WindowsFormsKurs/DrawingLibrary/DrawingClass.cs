@@ -4,6 +4,7 @@ using System.Linq;
 using System.Drawing;
 using ZedGraph;
 using CountingLibrary;
+using System.Windows.Forms;
 
 namespace DrawingLibrary
 {

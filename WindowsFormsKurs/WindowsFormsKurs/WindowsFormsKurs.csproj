@@ -55,19 +55,19 @@
     <Compile Include="DeletingForm.Designer.cs">
       <DependentUpon>DeletingForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="DeletingForm.resx">
       <DependentUpon>DeletingForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -92,6 +92,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CountingLibrary\CountingLibrary.csproj">
+      <Project>{72829f45-f4f1-4c76-adbb-9f9394ec9101}</Project>
+      <Name>CountingLibrary</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DrawingLibrary\DrawingLibrary.csproj">
       <Project>{83781519-9e07-4c83-ac79-17b9e6d56d26}</Project>
       <Name>DrawingLibrary</Name>
