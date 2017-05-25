@@ -33,6 +33,7 @@ namespace CountingLibrary
             for (int i = 0; i < k; i++)
             {
                 int index = Array.IndexOf(nucl, str[i]);
+                if(index == -1) throw new ArgumentOutOfRangeException(null, "В последовательности найдены символы отличающихся от заданных нуклеотидов. Возможно это была РНК или белок.");
                 nucln[index]++;
             }
             Array.Sort(nucln, nucl);
@@ -68,7 +69,7 @@ namespace CountingLibrary
             //string path = @".\logs.txt";
             //using (StreamWriter sw = File.CreateText(path))
             //{
-               
+            
                 //Сумма в первом окне
                 double sum = CountInFirstFrame(str, k);
                 sumWF = sumWF + sum;
@@ -80,7 +81,7 @@ namespace CountingLibrary
                     //При сдвиге рамки одну букву добавляем, одну удаляем
                     i = Array.IndexOf(nucl, str[l - 1]);//удаляемый символ
                     //добавляемый символ
-                    if ((j = Array.IndexOf(nucl, str[l - 1 + k])) == -1) throw new ArgumentOutOfRangeException(null, "В последовательности найдены символы отличающихся от заданных нуклеотидов. Возможно это была РНК или последовательность аминокислот.");
+                    if ((j = Array.IndexOf(nucl, str[l - 1 + k])) == -1) throw new ArgumentOutOfRangeException(null, "В последовательности найдены символы отличающихся от заданных нуклеотидов. Возможно это была РНК или белок.");
                     nucln[i]--;
                     nucln[j]++;
 
@@ -152,7 +153,12 @@ namespace CountingLibrary
             for (int i = 0; i < k; i++)
             {
                 int index = Array.IndexOf(nucl, str[i]);
-                nucln[index]++;
+                if (index == -1)
+                {
+
+                    throw new ArgumentOutOfRangeException(null, "В последовательности найдены символы отличающихся от заданных нуклеотидов. Возможно это была РНК или белок.");
+                }
+                    nucln[index]++;
             }
             Array.Sort(nucln, nucl);
 

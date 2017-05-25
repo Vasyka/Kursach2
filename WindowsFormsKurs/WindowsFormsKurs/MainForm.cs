@@ -48,7 +48,7 @@ namespace WindowsFormsKurs
                     Draw.AddGraph(zedGraphControl1, input, secondAlgFlag);
                     SW.Stop();
 
-                    //Информация о времени выполнения
+                   // Информация о времени выполнения
                     string info = "Время выполнения в миллисекундах: " + Convert.ToString(SW.ElapsedMilliseconds) + "\nВремя в секундах: " + Convert.ToString(SW.Elapsed.Seconds) + "\nВремя в тиках: " + Convert.ToString(SW.ElapsedTicks);
                     MessageBox.Show(info);
                 }
@@ -57,13 +57,13 @@ namespace WindowsFormsKurs
                     throw new ArgumentOutOfRangeException(null, "Достигнуто максимальное количество кривых на графике. Удалите хотя бы одну из них.");
                 }
             }
-            catch(ArgumentOutOfRangeException ex)
+            catch (ArgumentNullException ex)
+            {
+                MessageBox.Show(ex.Message, "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show(ex.GetType().FullName + ": " + ex.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
@@ -126,17 +126,13 @@ namespace WindowsFormsKurs
                             s[2] = Path.GetFileName(openFileDialog.FileName);
 
                             //Создаем файл с логами и записываем в него обновленную последовательность
-                            /*string path = @".\logs.txt";
+                            string path = @".\logs.txt";
                             using (StreamWriter sw = File.CreateText(path))
                             {
                                 sw.WriteLine("\nОписание последовательности: " + s[0] + "\n");
                                 sw.WriteLine("Длина последовательности: " + s[1].Length + " пар нуклеотидов");
                                 sw.WriteLine(s[1]);
-                            }*/
-                        }
-                        catch (ArgumentOutOfRangeException e)
-                        {
-                            MessageBox.Show(e.Message, "Ошибка!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            }
                         }
                         catch (Exception e)
                         {
@@ -146,9 +142,11 @@ namespace WindowsFormsKurs
                 }
                 else
                 {
-                    MessageBox.Show("Вы не выбрали файл.", "Уведомление", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    throw new ArgumentNullException(null,"Вы не выбрали файл.");
                 }
             }
+            catch (ArgumentNullException e) { throw e; }
+            catch (ArgumentOutOfRangeException e) { throw e; }
             catch (Exception e)
             {
                 throw new Exception("Невозможно открыть и прочитать файл.", e);

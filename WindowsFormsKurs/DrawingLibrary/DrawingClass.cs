@@ -31,6 +31,9 @@ namespace DrawingLibrary
         {
             GraphPane myPane = a.GraphPane;
 
+            //Включаем функцию показывания значений сложности и длины окна в точке графика
+            a.IsShowPointValues = true;
+
             //Названия графика и осей
             myPane.Title.Text = "График зависимости сложности ДНК от длины окна";
             myPane.XAxis.Title.Text = "L - длина окна";
@@ -55,54 +58,54 @@ namespace DrawingLibrary
             if (input == null) throw new NullReferenceException("Получена пустая ссылка на последовательность.");
             string dnaString = input[1];
 
-            if (dnaString != "")//если строка не пуста
-            {
-                GraphPane myPane = zgc.GraphPane;
-
-                //Получаем идентификатор последовательности
-                string dnaName = input[0].Substring(0, input[0].IndexOf(" "));
-
-                //Получаем имя файла и добавляем в список имён файлов последовательностей
-                string fileName = input[2];
-                NameList.Add(fileName);
-
-                //Создаем и заполняем список точек
-                PointPairList list = new PointPairList();
-                for (int L = 15; L <= 25; L = L + 2)
+                if (dnaString != "")//если строка не пуста
                 {
-                    //Выбор алгоритма
-                    CountingClass Count = alg2 ? new CountingClass2(nucl) : new CountingClass(nucl);
+                    GraphPane myPane = zgc.GraphPane;
 
-                    //Подсчет сложности ДНК для окна L
-                    list.Add(L, Count.CWF(dnaString, L));
+                    //Создаем и заполняем список точек
+                    PointPairList list = new PointPairList();
+                    for (int L = 15; L <= 25; L = L + 2)
+                    {
+                       //Выбор алгоритма
+                       CountingClass Count = alg2 ? new CountingClass2(nucl) : new CountingClass(nucl);
+                       //Подсчет сложности ДНК для окна L
+                       list.Add(L, Count.CWF(dnaString, L));
+                     }
+                  
+                    //Получаем идентификатор последовательности
+                    //string dnaName = input[0].Substring(0, input[0].IndexOf(" "));
+
+                    //Получаем имя файла и добавляем в список имён файлов последовательностей
+                    string fileName = input[2];
+                    NameList.Add(fileName);
+                    
+                    //Добавляем сетку и легенду
+                    GraphProperties(myPane);
+
+                    //Выбираем цвет графика
+                    Color CurveColor = ColorList[0];
+
+                    //Удаляем используемый цвет из списка цветов
+                    ColorList.Remove(CurveColor);
+
+                    //Рисуем график
+                    LineItem myCurve = myPane.AddCurve(fileName,
+                       list, CurveColor, SymbolType.Circle);
+
+                    //Стиль линии
+                    myCurve.Line.Width = 3;
+
+                    //Сглаживание графика
+                    myCurve.Line.IsSmooth = true;
+                    //myCurve.Line.IsAntiAlias = true;
+
+                    //Обновляем график
+                    zgc.AxisChange();
+                    zgc.Refresh();
+                    zgc.Invalidate();
                 }
-
-                //Добавляем сетку и легенду
-                GraphProperties(myPane);
-
-                //Выбираем цвет графика
-                Color CurveColor = ColorList[0];
-
-                //Удаляем используемый цвет из списка цветов
-                ColorList.Remove(CurveColor);
-
-                //Рисуем график
-                LineItem myCurve = myPane.AddCurve(fileName,
-                   list, CurveColor, SymbolType.Circle);
-
-                //Стиль линии
-                myCurve.Line.Width = 3;
-
-                //Сглаживание графика
-                myCurve.Line.IsSmooth = true;
-                //myCurve.Line.IsAntiAlias = true;
-
-                //Обновляем график
-                zgc.AxisChange();
-                zgc.Refresh();
-                zgc.Invalidate();
             }
-        }
+
         public void DelGraph(ZedGraphControl zgc, int graphIndex)//Удаление графика
         {
             GraphPane myPane = zgc.GraphPane;
